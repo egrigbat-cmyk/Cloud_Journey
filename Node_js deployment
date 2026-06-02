@@ -1,0 +1,31 @@
+# Node.js Backend Deployment — AWS EC2
+
+## Live Projects
+- haven.thukool.online
+- secret.thukool.online
+
+## Stack
+- AWS EC2 (Ubuntu 24.04)
+- Node.js + PM2 (process management)
+- Nginx (reverse proxy)
+- Let's Encrypt / Certbot (SSL)
+- GitHub Webhooks (CI/CD auto-deployment)
+
+## Architecture
+GitHub push → Webhook triggers EC2 → 
+Script pulls latest code → PM2 restarts app → 
+Nginx routes traffic → SSL termination
+
+## What Was Configured
+- EC2 instance provisioned and secured
+- Nginx configured as reverse proxy for two separate backends on same server
+- SSL certificates issued via Certbot for both subdomains
+- PM2 configured to auto-restart on crash and persist across reboots
+- GitHub webhook CI/CD — push to main branch auto-deploys without manual SSH
+
+## Key Skills Demonstrated
+- Linux server administration
+- Reverse proxy configuration
+- SSL/TLS certificate management
+- CI/CD pipeline setup
+- Process management
