@@ -1,0 +1,34 @@
+# Cloudflare DNS Migration - thukool.online
+
+## Overview
+Migrated DNS management from Namecheap to Cloudflare for thukool.online, 
+a domain hosting two live Node.js backends on AWS EC2.
+
+## Architecture
+Before: Visitor → Namecheap DNS → EC2 (direct)
+After: Visitor → Cloudflare DNS → EC2 (direct, grey cloud for backends)
+
+## What Was Done
+- Audited existing DNS records (A, MX, TXT, SPF, DKIM, DMARC)
+- Manually added missing subdomain records (haven, secret) not detected in scan
+- Preserved Zoho email records and Resend DKIM records
+- Configured SSL/TLS mode to Full (strict) - compatible with existing Let's Encrypt certs
+- Set backend subdomains to DNS only (grey cloud) to prevent API disruption
+- Changed nameservers from Namecheap to Cloudflare
+
+## Key Decisions
+- Backends kept DNS-only: Cloudflare's bot challenge system would break programmatic API requests
+- Full (strict) SSL: prevents redirect loops with existing Let's Encrypt certificates
+- All email records migrated before nameserver change to prevent mail disruption
+
+## Tools Used
+- Cloudflare Free Plan
+- Namecheap (registrar)
+- AWS EC2 (origin server)
+- Let's Encrypt / Certbot (SSL)
+- Zoho Mail + Resend (email infrastructure)
+
+## Lessons Learned
+- DNS scanners miss subdomains not explicitly listed - always audit manually
+- Grey vs orange cloud distinction is critical for API backends
+- Nameserver migration order matters: add all records first, change nameservers last
